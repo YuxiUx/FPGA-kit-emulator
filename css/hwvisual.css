@@ -1,0 +1,56 @@
+#controller {
+    text-align: center;
+    display: inline-block;
+    height:70px;
+    width: 70px;
+    border: 1px solid black;
+    padding: 5px 0;
+    background: #202225;
+}
+.btn {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 15px;
+    font-size: 15px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 100%;
+}
+.btn:hover {
+    background: rgba(255,255,0,0.5)!important;
+}
+
+.led-container, .swi-container {
+    display: inline-block;
+    width: 20px;
+    font-size: 8px;
+    background: #202225;
+    text-align: center;
+    padding: 0px 0;
+    color: #8e9297;
+    border-left: 1px solid black;
+}
+.led {
+    border: 1px solid black;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    border-radius: 100%;
+}
+.digit {
+    position: relative;
+    display: inline-block;
+    margin: 0 2px;
+}
+.digit .segment {
+    position: absolute;
+    box-sizing: content-box;
+    border-radius: 30% 10%;
+}
+#display {
+    text-align: center;
+}

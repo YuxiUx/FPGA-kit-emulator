@@ -1,0 +1,117 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    background: #36393f;
+    min-width: 800px;
+    color: #dcddde;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    background: #292b2f;
+    border-top: 1px solid rgba(0,0,0,1);
+    height: 25px;
+    width: 100%
+}
+nav {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid black;
+    box-shadow: 0 -2px 3px white;
+    z-index: 99;
+}
+main {
+    position: absolute;
+    top: 40px;
+    width: 100%;
+    height: calc(100% - 65px);
+}
+#sidebar {
+    position: absolute;
+    height: 100%;
+    width: 325px;
+    left: 0;
+    background: #2f3136;
+    z-index: 100;
+}
+#editor {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: calc(100% - 325px);
+}
+#tabs {
+/*    border-bottom: 1px solid black;*/
+    height: 30px;
+    background: #2f3136;
+    /*border-left: 1px solid black;*/
+    box-shadow: inset 0px -1px 1px #202225;
+}
+#tabs button {
+    background: none;
+    border: none;
+    height: 30px;
+    padding: 5px;
+    border-right: 1px solid #202525;
+    color: #8e9297;
+    cursor: pointer;
+    border-radius: 5px 5px 0px 0px;
+    
+}
+#tabs button:hover {
+    background: rgba(0,255,0,0.15);
+}
+.tab {
+    position: absolute;
+    display: none;
+    height: calc(100% - 30px);
+    width: 100%;
+    overflow-y: scroll;
+}
+.tab.default {
+    display: block;
+}
+.CodeMirror {
+    height: 100% !important;
+}
+.hwcfgy  td {
+    padding-left: 10px;
+    color: #8e9297;
+}
+.hwcfgy th {
+    color: white;
+    padding-left: 10px;
+}
+.hwcfgy input {
+    background: #26282c;
+    border: 1px solid black;
+    border-radius: 2px;
+    color: #8e9297;
+}
+#hw-cfg {
+    padding: 10px;
+}
+#hw-cfg table {
+    margin-top: 10px;
+}
+#hw-cfg input[type='checkbox'] {
+    color: black;
+}
+.cont {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    line-height: 20px;
+    cursor: pointer;
+    color: #00FF00;
+    background: none;
+    border: none;
+}
+.cont:hover {
+    color: green;
+}

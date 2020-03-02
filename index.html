@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head>
+    <!-- nice example of how to NOT code. boomer layout and shitty js
+         so stop reading this and go learn something about frontend frameworks, flex design, etc.-->
+
+    <meta charset="UTF-8">
+    <title>FPGA kit emulator</title>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/hwvisual.css">
+    <script type="text/javascript" src="js/io.js"></script>
+    <script type="text/javascript" src="js/ledcontroller.js"></script>
+    <script type="text/javascript" src="js/switchcontroller.js"></script>
+    <script type="text/javascript" src="js/buttoncontroller.js"></script>
+    <script type="text/javascript" src="js/displaycontroller.js"></script>
+    <script type="text/javascript" src="js/tabmanager.js"></script>
+    <script type="text/javascript" src="js/svhdlruntime.js"></script>
+    <script type="text/javascript" src="js/hwconfigurator.js"></script>
+
+    <script type="text/javascript" src="vendor/codemirror-5.52.0/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="vendor/codemirror-5.52.0/lib/codemirror.css">
+    <script type="text/javascript" src="vendor/codemirror-5.52.0/mode/vhdl/vhdl.js"></script>
+    <script type="text/javascript" src="vendor/codemirror-5.52.0/addon/edit/matchbrackets.js"></script>
+    <link rel="stylesheet" href="vendor/codemirror-5.52.0/theme/abcdef.css">
+
+</head><body>
+  <nav id="mainbar">
+      <button class="cont" onclick="exec()">&#9654;</button>
+  </nav>
+  <main>
+      <div id="sidebar">
+          <div id="device">
+              <div id="display"></div>
+              <div id="led"></div>
+              <div id="swi"></div>
+              <div id="controller"></div>
+          </div>
+      </div>
+      <div id="editor">
+          <div id="tabs">
+              <button id="hw-cfg-tab">HW config</button>
+              <button id="vhdl-tab">Simplified VHDL</button>
+          </div>
+          <div id="wind">
+              <div id="hw-cfg" class="tab default">
+                  Port is nonactive until is named then become available in all script via your name
+                  <div id="configurator"></div>
+              </div>
+              <div id="vhdl" class="tab">
+                  <textarea id="vhdl-edit" name="vhdl-edit">-- your code  PS: use whitespace on both side of variable name. current runtime sucks :P
+</textarea>
+              </div>
+          </div>
+      </div>
+  </main>
+  <footer>
+
+  </footer>
+  <script>
+      io = new IO();
+      btn = new ButtonController("controller", io.hwio, [
+          [{"symbol":"^", "name":"BTNU"}],
+          [
+              {"symbol":"&lt;", "name":"BTNL"},
+              {"symbol":"o",    "name":"BTNC"},
+              {"symbol":"&gt;", "name":"BTNR"}
+          ],
+          [{"symbol":"v", "name":"BTND"}]
+      ]);
+      led = new LedController("led", 15, io.hwio);
+      swi = new SwitchController("swi", 15, io.hwio);
+      dis = new DisplayController("display", 3, io.hwio);
+      io.onChange.push(btn);
+      io.onChange.push(swi);
+      io.onHwChange.push(led);
+      io.onHwChange.push(dis);
+
+      run = new SVhdlRuntime(io.swio);
+      /*run.config.variable = {
+          "a":{"code":"LD0"},
+          "b":{"code":"LD1"},
+          "c":{"code":"LD2"},
+          "d":{"code":"LD3"},
+          "e":{"code":"LD4"},
+          "aa":{"code":"SW0"},
+          "ab":{"code":"SW1"},
+          "ac":{"code":"SW2"},
+          "ad":{"code":"SW3"},
+          "ae":{"code":"SW4"}
+      };*/
+      io.onChange.push(run);
+
+      cfg = new HwConfigurator("configurator", io, run);
+
+      //io.onChange.push({"events":"all","callback":console.log}); //watch all event emitted by hw
+
+      tab = new TabManager();
+      tab.Add("hw-cfg");
+      tab.Add("vhdl");
+
+      var editor = CodeMirror.fromTextArea(document.getElementById("vhdl-edit"), {
+          lineNumbers: true,
+          matchBrackets: true,
+          theme: "abcdef",
+          mode: "vhdl",
+      });
+      editor.refresh();
+
+      function exec() {
+          editor.save();
+          run.compile(tab._tabs.vhdl.firstElementChild.value);
+          run.runCode();
+      }
+  </script>
+</body></html>
