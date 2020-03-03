@@ -48,9 +48,30 @@ function HwConfigurator(parent, io, runtime) {
         }
     }
     this._parent.appendChild(nd);
+    this.reset = () => {
+//        delete this.runtime.config.variable;
+        this.runtime.config.variable = {};
+//        delete this._map;
+        this._map = {};
+        this.update();
+    };
+    this.update = () => {
+        for(let k in this._node) { //reset config table
+            if(this._node.hasOwnProperty(k)) {
+                this._node[k].value = "";
+                this._nodeC[k].checked = false;
+            }
+        }
+        for(let k in this.runtime.config.variable) { //load setting
+            if (this.runtime.config.variable.hasOwnProperty(k)) {
+                this.ChName(this.runtime.config.variable[k].code, k);
+            }
+        }
+    };
     this.ChName = (port, name) => {
-        if(this.runtime.config.variable.hasOwnProperty(name) && this.runtime.config.variable[name] != port) {
+        if(this.runtime.config.variable.hasOwnProperty(name) && this.runtime.config.variable[name].code != port) {
             alert(`Name "${name}" is already used for port "${this.runtime.config.variable[name].code}"`);
+            this._node[port].value = "";
             return;
         }
         delete this.runtime.config.variable[this._map[port]];
@@ -61,5 +82,7 @@ function HwConfigurator(parent, io, runtime) {
         }
         this._map[port] = name;
         this._nodeC[port].checked = name != "";
+        if(this._node[port].value !== name)
+            this._node[port].value = name;
     };
 }

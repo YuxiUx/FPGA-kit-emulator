@@ -6,24 +6,40 @@
     <title>FPGA kit emulator</title>
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/hwvisual.css">
+    <!-- hw -->
     <script type="text/javascript" src="js/io.js"></script>
     <script type="text/javascript" src="js/ledcontroller.js"></script>
     <script type="text/javascript" src="js/switchcontroller.js"></script>
     <script type="text/javascript" src="js/buttoncontroller.js"></script>
     <script type="text/javascript" src="js/displaycontroller.js"></script>
-    <script type="text/javascript" src="js/tabmanager.js"></script>
     <script type="text/javascript" src="js/svhdlruntime.js"></script>
     <script type="text/javascript" src="js/hwconfigurator.js"></script>
-
+    <!-- editor -->
     <script type="text/javascript" src="vendor/codemirror-5.52.0/lib/codemirror.js"></script>
     <link rel="stylesheet" href="vendor/codemirror-5.52.0/lib/codemirror.css">
     <script type="text/javascript" src="vendor/codemirror-5.52.0/mode/vhdl/vhdl.js"></script>
     <script type="text/javascript" src="vendor/codemirror-5.52.0/addon/edit/matchbrackets.js"></script>
     <link rel="stylesheet" href="vendor/codemirror-5.52.0/theme/abcdef.css">
+    <!-- gui -->
+    <script src="https://kit.fontawesome.com/6a608b3f04.js" crossorigin="anonymous" async></script>
+    <script type="text/javascript" src="js/tabmanager.js"></script>
+    <!-- wrk -->
+    <script type="text/javascript" src="vendor/yos/lib/YStorage.js"></script>
+    <script type="text/javascript" src="js/editmanager.js"></script>
 
 </head><body>
   <nav id="mainbar">
-      <button class="cont" onclick="exec()">&#9654;</button>
+      <div class="nav-group" id="nav-file">
+          <button class="cont" onclick="fm.SaveLocal();" title="Save project in browser"><i class="fa fa-save"></i></button>
+          <button class="cont" onclick="fm.Restore();" title="Restore last browser save"><i class="fas fa-sync-alt"></i></button>
+          <button class="cont" onclick="fm.SaveProject();" title="Download project"><i class="fa fa-download"></i></button>
+          <button class="cont" onclick="fm.SaveFile();" title="Download VHDL"><i class="fa fa-file-download"></i></button>
+          <input type="file" name="file-selector" onchange="fm.Open(this)" style="display: none">
+          <button class="cont" onclick="document.getElementsByName('file-selector')[0].click();" title="Open file or project"><i class="fa fa-folder-open"></i></button>
+      </div>
+      <div class="nav-group" id="nav-runtime">
+          <button class="cont" onclick="fm.Run();">&#9654;</button>
+      </div>
   </nav>
   <main>
       <div id="sidebar">
@@ -74,18 +90,6 @@
       io.onHwChange.push(dis);
 
       run = new SVhdlRuntime(io.swio);
-      /*run.config.variable = {
-          "a":{"code":"LD0"},
-          "b":{"code":"LD1"},
-          "c":{"code":"LD2"},
-          "d":{"code":"LD3"},
-          "e":{"code":"LD4"},
-          "aa":{"code":"SW0"},
-          "ab":{"code":"SW1"},
-          "ac":{"code":"SW2"},
-          "ad":{"code":"SW3"},
-          "ae":{"code":"SW4"}
-      };*/
       io.onChange.push(run);
 
       cfg = new HwConfigurator("configurator", io, run);
@@ -96,7 +100,7 @@
       tab.Add("hw-cfg");
       tab.Add("vhdl");
 
-      var editor = CodeMirror.fromTextArea(document.getElementById("vhdl-edit"), {
+      editor = CodeMirror.fromTextArea(document.getElementById("vhdl-edit"), {
           lineNumbers: true,
           matchBrackets: true,
           theme: "abcdef",
@@ -104,10 +108,7 @@
       });
       editor.refresh();
 
-      function exec() {
-          editor.save();
-          run.compile(tab._tabs.vhdl.firstElementChild.value);
-          run.runCode();
-      }
+      fm = new EditManager(editor, "vhdl-edit", run, io, cfg);
+
   </script>
 </body></html>
