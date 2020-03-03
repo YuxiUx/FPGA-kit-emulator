@@ -1,7 +1,7 @@
 codemirror-5.52.0/*
 !codemirror-5.52.0/addon/
 !codemirror-5.52.0/keymap/
-!vendor/codemirror-5.52.0/lib/
+!codemirror-5.52.0/lib/
 !codemirror-5.52.0/mode/js/
 !codemirror-5.52.0/mode/vhdl/
 !codemirror-5.52.0/theme/
