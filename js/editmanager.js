@@ -20,10 +20,14 @@ function EditManager(editor, id, runtime, io, hwmanager) {
         this.project.code = this.text;
     };
     this.getFileName = () => {
-        if(this.name == "") {
+        if(!this.name) {
             this.name = prompt("Save file as (select name)", "untitled");
         }
-        return this.name ? this.name : "untitled";
+        if(this.name) {
+            this.project.name = this.name;
+            return this.name;
+        }
+        return "untitled";
     };
     this.SaveFile = ()=>{
         this.update();
