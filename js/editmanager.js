@@ -50,6 +50,28 @@ function EditManager(editor, id, runtime, io, hwmanager) {
         this.text = text;
         this.editor.setValue(text);
     };
+    this.NetworkOpenDialog = () => {
+        let file = prompt("Enter file url");
+        if(!file) return;
+        this.NetworkOpen(file);
+    };
+    this.NetworkOpen = (url) => {
+        let request = this._createCORSRequest("get", url);
+        request.onload  = this._networkHandle;
+        request.onerror = (c) => {
+            console.log(c);
+            alert("Error while loading file\nProbably cross-origin policy. Gonna fix this latter.");
+        };
+        request.send();
+
+    };
+    this._networkHandle = (call) => {
+        if(call.target.responseURL.endsWith(".json")) {
+            this.OpenProject(call.target.response);
+        } else {
+            this.OpenFile(call.target.response);
+        }
+    };
     this.Open = (e) => {
         let file = e.files[0];
         if (!file) {
@@ -81,5 +103,24 @@ function EditManager(editor, id, runtime, io, hwmanager) {
         this.name = this.project.name;
         this.overrideText(this.project.code);
         this.hwmanager.update();
+    };
+    this._createCORSRequest = (method, url) => { //polyfill
+        var xhr = new XMLHttpRequest();
+        if ("withCredentials" in xhr) {
+            // XHR has 'withCredentials' property only if it supports CORS
+            xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") { // if IE use XDR
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+        } else {
+            xhr = null;
+        }
+        return xhr;
+    }
+    this.autoOpen = ()=> {
+        let url = new URLSearchParams(window.location.search);
+        if(url) {
+            this.NetworkOpen(decodeURIComponent(url.get("open")));
+        }
     }
 }

@@ -36,6 +36,7 @@
           <button class="cont" onclick="fm.SaveFile();" title="Download VHDL"><i class="fa fa-file-download"></i></button>
           <input type="file" name="file-selector" onchange="fm.Open(this)" style="display: none">
           <button class="cont" onclick="document.getElementsByName('file-selector')[0].click();" title="Open file or project"><i class="fa fa-folder-open"></i></button>
+          <button class="cont" onclick="fm.NetworkOpenDialog();" title="Open remote file"><i class="far fa-folder-open"></i></button>
       </div>
       <div class="nav-group" id="nav-runtime">
           <button class="cont" onclick="fm.Run();">&#9654;</button>
@@ -109,6 +110,6 @@
       editor.refresh();
 
       fm = new EditManager(editor, "vhdl-edit", run, io, cfg);
-
+      fm.autoOpen();
   </script>
 </body></html>
