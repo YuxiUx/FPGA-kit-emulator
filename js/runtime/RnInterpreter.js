@@ -49,11 +49,9 @@ function RnInterpreter(io, source ="") {
         return aVal;
     };
     this.evaluate = (bracket = 0) => {
-        console.log("wval",this.token, bracket);
         let out = this.getVal(bracket);
         let expect = bracket?this._t.BRACKET_END:this._t.SEMICOLON;
         while (!this.token.in(expect)) {
-            console.log("while ",this.token, bracket);
             let operator = this.token;
             this.eat(this._t.OPERATOR);
             let val = this.getVal(bracket);
