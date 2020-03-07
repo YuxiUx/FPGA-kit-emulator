@@ -44,7 +44,7 @@ function EditManager(editor, id, runtime, io, hwmanager) {
     this.Run = ()=>{
         this.update();
         this.runtime.compile(this.text);
-        this.runtime.runCode();
+        this.runtime.Run();
     };
     this.overrideText = (text) => {
         this.text = text;

@@ -12,8 +12,12 @@
     <script type="text/javascript" src="js/switchcontroller.js"></script>
     <script type="text/javascript" src="js/buttoncontroller.js"></script>
     <script type="text/javascript" src="js/displaycontroller.js"></script>
-    <script type="text/javascript" src="js/svhdlruntime.js"></script>
+    <!--script type="text/javascript" src="js/svhdlruntime.js"></script-->
     <script type="text/javascript" src="js/hwconfigurator.js"></script>
+    <script type="text/javascript" src="js/runtime/RnFile.js"></script>
+    <script type="text/javascript" src="js/runtime/RnToken.js"></script>
+    <script type="text/javascript" src="js/runtime/RnTokenizer.js"></script>
+    <script type="text/javascript" src="js/runtime/RnInterpreter.js"></script>
     <!-- editor -->
     <script type="text/javascript" src="vendor/codemirror-5.52.0/lib/codemirror.js"></script>
     <link rel="stylesheet" href="vendor/codemirror-5.52.0/lib/codemirror.css">
@@ -23,6 +27,7 @@
     <!-- gui -->
     <script src="https://kit.fontawesome.com/6a608b3f04.js" crossorigin="anonymous" async></script>
     <script type="text/javascript" src="js/tabmanager.js"></script>
+    <script type="text/javascript" src="js/console.js"></script>
     <!-- wrk -->
     <script type="text/javascript" src="vendor/yos/lib/YStorage.js"></script>
     <script type="text/javascript" src="js/editmanager.js"></script>
@@ -63,7 +68,7 @@
                   <div id="configurator"></div>
               </div>
               <div id="vhdl" class="tab">
-                  <textarea id="vhdl-edit" name="vhdl-edit">-- your code  PS: use whitespace on both side of variable name. current runtime sucks :P
+                  <textarea id="vhdl-edit" name="vhdl-edit">-- your code 
 </textarea>
               </div>
           </div>
@@ -73,6 +78,8 @@
 
   </footer>
   <script>
+      con = new cons();
+
       io = new IO();
       btn = new ButtonController("controller", io.hwio, [
           [{"symbol":"^", "name":"BTNU"}],
@@ -91,7 +98,8 @@
       io.onHwChange.push(led);
       io.onHwChange.push(dis);
 
-      run = new SVhdlRuntime(io.swio);
+      //run = new SVhdlRuntime(io.swio);
+      run = new RnInterpreter(io.swio);
       io.onChange.push(run);
 
       cfg = new HwConfigurator("configurator", io, run);
