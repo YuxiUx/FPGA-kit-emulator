@@ -116,11 +116,12 @@ function EditManager(editor, id, runtime, io, hwmanager) {
             xhr = null;
         }
         return xhr;
-    }
+    };
     this.autoOpen = ()=> {
         let url = new URLSearchParams(window.location.search);
-        if(url) {
-            this.NetworkOpen(decodeURIComponent(url.get("open")));
+        url = url.get("open");
+        if(url!=null) {
+            this.NetworkOpen(decodeURIComponent(url));
         }
     }
 }
