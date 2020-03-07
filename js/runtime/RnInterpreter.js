@@ -34,7 +34,7 @@ function RnInterpreter(io, source ="") {
             case this._t.OPERATOR:
                 if(this.tokenizer.operator[a.value].nb !== 0) this.unexpected(this.token, "unary operator, const, or var");
                 //this.eat(this._t.OPERATOR);
-                aVal = this.tokenizer.operator[a.value].fn(this.evaluate());
+                aVal = this.tokenizer.operator[a.value].fn(this.getVal(bracket));
                 break;
             case this._t.INTEGER:
                 aVal = a.value;
